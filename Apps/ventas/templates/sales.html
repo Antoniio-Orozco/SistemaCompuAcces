@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block contenido %}
+
+<link rel="stylesheet" href="{% static 'css/b4.css' %}">
+<script src="{% static 'js/b4.js' %}"></script>
+<script src="{% static 'js/main3.js' %}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+	integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+	crossorigin="anonymous"></script>
+
+<section class="full-width header-well">
+	<div class="full-width header-well-icon">
+		<i class="zmdi zmdi-shopping-cart"></i>
+	</div>
+</section>
+
+
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+
+	<div class="mdl-tabs__panel is-active" id="tabNewClient">
+		<div class="mdl-grid">
+			<div class="mdl-cell mdl-cell--12-col">
+				<div class="full-width panel mdl-shadow--2dp">
+					<div class="full-width panel-tittle bg-primary text-center tittles">
+						LISTADO DE VENTAS
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card card-body" style="overflow:scroll">
+								<table class="table table-hover table-primary" id="myTable">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th class="mdl-data-table__cell--non-numeric">Fecha de compra</th>
+											<th>Producto</th>
+											<th>Empleado</th>
+											<th>Total</th>	
+											<th>Agregar Cliente</th>
+											<th>Detalles</th>
+										</tr>
+									</thead>
+									<tbody class="text-dark">
+										{% for Venta in object_list %}
+										<tr>
+											<td>{{Venta.id}}</td>
+											<td class="mdl-data-table__cell--non-numeric">{{Venta.fecha}}</td>
+											<td>
+												{%for producto in Venta.producto.all%}
+												{{producto}}
+												<br>
+												{%endfor%}
+											</td>
+											<td>{{Venta.empleado}}</td>
+											<td>{{Venta.total}}</td>			
+											<td><a href="{% url 'ventas:agregarcl' Venta.id %}" class="btn btn-danger btn-sm">Agregar Cliente</a></td>
+											<td><a href="{% url 'ventas:detallesVenta' Venta.id%}" class="btn btn-primary btn-sm">Ver</a>
+										</tr>
+										{%endfor%}
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

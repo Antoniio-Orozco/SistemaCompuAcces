@@ -1,0 +1,119 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block contenido%}
+
+<link rel="stylesheet" href="{% static 'css/b4.css' %}">
+<link rel="stylesheet" href="{% static 'css/main1.css' %}">
+<script src="{% static 'js/b4.js' %}"></script>
+<script src="{% static 'js/main3.js' %}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+	integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+	crossorigin="anonymous"></script>
+
+
+<section class="full-width header-well">
+	<div class="full-width header-well-icon">
+		<i class="zmdi zmdi-shopping-cart"></i>
+	</div>
+</section>
+
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+
+	<div class="mdl-tabs__panel is-active" id="tabNewClient">
+		<div class="mdl-grid">
+			<div class="mdl-cell mdl-cell--12-col">
+				<div class="full-width panel mdl-shadow--2dp">
+					<div class="full-width panel-tittle bg-primary text-center tittles">
+						REGISTRO DE VENTAS
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card card-body" style="overflow:scroll">
+
+
+								<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+									{% if cart.producto.exists %}
+									<div class="col">
+										<table class="table table-hover table-primary" id="myTable">
+											<thead>
+												<tr>
+													<th scope="col"></th>
+													<th scope="col"></th>
+													<th scope="col"></th>
+													<th scope="col">Cantidad</th>
+													<th scope="col">Precio</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												{% for cp in cart.products_related %}
+												{% with product=cp.product %}
+												<tr>
+													<th>
+														{{forloop.counter}}
+													</th>
+													<th>
+														{%if product.icono%}
+														<img src="{{product.icono.url}}" alt="Imagen del producto"
+															width="60" height="60">
+														{%endif%}
+													</th>
+													<th>
+														<a
+															href="{%url 'administracion:productosapp' %}">{{product.nombre}}</a>
+														{%include 'snippetRemove.html'%}
+													</th>
+													<th>
+														{{cp.quantity}}
+													</th>
+													<th>
+														<span
+															class="font-weight-bold text-danger">{{product.precio}}</span>
+													</th>
+
+												</tr>
+												{%endwith%}
+												{%endfor%}
+											</tbody>
+										</table>
+
+									</div>	
+
+									<div class="col" id="contenidoTotales">
+										<div class="card">
+											<div class="card-body">
+												<div class="font-weight-bold">
+													Total({{cart.producto.count}}): <span
+														class="text-danger">Q{{cart.total}}</span>
+												</div>
+
+												<div class="mt-2">
+													<a class="btn btn-primary" href="{% url 'administracion:productosapp' %}">
+														Agregar más productos</a>
+
+														<a class="btn btn-danger" href="{%url 'ventas:complete'%}" class="btn btn-warning">Confirmar Venta</a>
+												</div>																	
+											</div>
+										</div>
+									</div>
+									{% else %}
+									<div class="col text-center" >
+										<p class="h3">
+											El carrito esta vacío
+										</p><br>
+										<a class="btn btn-danger" href="{% url 'administracion:productosapp' %}">Seleccionar productos</a>
+									</div>
+									{% endif %}
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

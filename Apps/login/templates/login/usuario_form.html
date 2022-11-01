@@ -1,0 +1,56 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block contenido%}
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a href="#tabNewProduct" class="mdl-tabs__tab is-active">Crear Usuario</a>
+    </div>
+    <div class="mdl-tabs__panel is-active" id="tabNewProduct">
+        <div class="contact-form ">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                            &nbsp; Datos de Usuario</legend><br>
+                    </div>
+                    <div class="mdl-textfield__input">
+                        <div class=" mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                            Usuario: {{form.username}}
+                        </div>
+                    </div>
+                    <div class="mdl-textfield__input">
+                        <div class=" mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                            Email: {{form.email}}
+                        </div>
+                    </div>
+                    <div class="mdl-textfield__input">
+                        <div class=" mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                            Nombre: {{form.first_name}}
+                        </div>
+                    </div>
+                    <div class="mdl-textfield__input">
+                        <div class=" mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                            Apellido: {{form.last_name}}
+                        </div>
+                    </div>
+                    <div class="mdl-textfield__input">
+                        <div class=" mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                            Contraseña: {{form.password1}}
+                        </div>
+                    </div>
+                    <div class="mdl-textfield__input">
+                        <div class=" mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                            Confirmar contraseña: {{form.password2}}
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center">
+                    <button class="button55 " style='width:130px; height:45px' type="submit">Guardar</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html'%} 
+{% load static %}
+{% load widget_tweaks %}
+{% block contenido %}
+
+<link rel="stylesheet" href="{% static 'css/b4.css' %}">
+<script src="{% static 'js/b4.js' %}"></script>
+<script src="{% static 'js/main3.js' %}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+	integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+	crossorigin="anonymous"></script>
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+
+  <div class="mdl-tabs__panel is-active" id="tabNewClient">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <div class="full-width panel mdl-shadow--2dp">
+          <div class="full-width panel-tittle bg-primary text-center tittles">
+           Detalle de la Venta
+          </div>
+          <div class="row">
+						<div class="col-md-12">
+							<div class="card card-body" style="overflow:scroll">
+
+                <table class="table table-hover table-primary" id="myTable">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th class="mdl-data-table__cell--non-numeric">Fecha de compra</th>
+											<th>Cliente</th>
+											<th>Empleado</th>	
+											<th>Descripcion</th>
+											<th>Total</th>
+										</tr>
+									</thead>
+
+									<tbody class="text-dark">
+									
+										<tr>
+                      <td>{{object.id}}</td>
+											<td class="mdl-data-table__cell--non-numeric">{{object.fecha}}</td>
+                      <td>{{object.cliente}}</td>
+                      <td>{{object.empleado}}</td>
+											<td>   
+                        {%for producto in object.producto.all%}
+                        {{producto}}
+                        <br>
+                        {%endfor%}</td>
+											<td>{{ object.total}}</td>
+										</tr>
+									</tbody>
+								</table>
+
+ 
+     
+
+          </div>
+ 
+          
+  
+        </div>
+       
+      </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a href="{% url 'ventas:sales' %}" class="btn btn-danger btn-sm" style="width:3cm; height: 0.90cm;">VOLVER</a>
+  </div>
+  
+</div>
+{% endblock %}

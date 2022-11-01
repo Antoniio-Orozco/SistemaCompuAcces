@@ -1,0 +1,44 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block contenido%}
+
+<link rel="stylesheet" href="{% static 'css/b4.css' %}">
+<script src="{% static 'js/b4.js' %}"></script>
+<script src="{% static 'js/main4.js' %}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+	integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+	crossorigin="anonymous"></script>
+    
+    <div id="centraragrerar">
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect text-center">
+
+        <div class="mdl-tabs__panel is-active text-center" id="tabNewClient">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--8-col">
+                    <div class="full-width panel mdl-shadow--2dp text-center">
+                        <div class="full-width panel-tittle bg-primary text-center tittles">
+                            Selecciona el cliente para completar la venta
+                        </div>
+                        <br>
+
+                        <form style="color:#3a3838; font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 0.50cm;" method="POST">
+                            {% csrf_token %}
+                            Cliente:  {{form.cliente}}
+                            <br><br><br>
+                            <button type="submit" class="btn btn-danger">
+                                Agregar
+                            </button>
+                            <br>
+                        </form>
+                        <br>
+                        <br>
+
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

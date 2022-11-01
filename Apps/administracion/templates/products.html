@@ -1,0 +1,178 @@
+{% extends 'base.html'%}
+{% load static%}
+{% load widget_tweaks %}
+{% block contenido%}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/b4.css' %}">
+<script src="{% static 'js/b4.js' %}"></script>
+<script src="{% static 'js/main5.js' %}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+	integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+	crossorigin="anonymous"></script>
+
+<link href="css\bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<section class="full-width header-well">
+	<article class="full-width tile">
+		<div class="tile-text">
+			<span class="text-condensedLight">
+				{{productos_count}}<br>
+				<small>Total de productos</small>
+			</span>
+		</div>
+		<i class="zmdi zmdi-washing-machine tile-icon"></i>
+	</article>
+</section>
+
+<div class="full-width panel-tittle bg-primary text-center tittles">
+	PRODUCTOS
+</div>
+<br>
+
+{% for group in request.user.groups.all %}
+{% if group.name == 'Administrador' %}
+<div class="col-md-3 pb-2">
+	<a href="#AgregarPersonalModal" data-toggle="modal" data-dismiss="modal">
+		<button type="button" class="btn btn-success">
+			Agregar Producto
+			<i class="fas fa-plus-circle"></i>
+		</button>
+	</a>
+</div>
+{% endif %}
+{% endfor %}
+
+
+{% block buscador %}
+<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET">
+
+	{% csrf_token %}
+	<div class="input-group">
+		<input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." name="buscar"
+			value="{{ request.GET.buscar }}">
+		<div class="input-group-append">
+			<button class="btn btn-primary" type="submit">
+				<i class="fas fa-search fa-sm"></i>
+			</button>
+		</div>
+	</div>
+</form>
+{% endblock buscador %}
+
+<br><br>
+
+
+{% for i in productos %}
+<div class="mdl-card mdl-shadow--2dp full-width product-card card bg-secondary text-white" id="listProd">
+
+	{% for group in request.user.groups.all %}
+	{% if group.name == 'Administrador' %}
+	<div class="btn-group btn-group-sm text-center" role="group" aria-label="Small button group">
+		<button onclick="editarCorrectivo('{{i.id}}', '{{i.nombre}}', '{{i.descripcion}}','{{i.cantidad}}','{{i.precio}}')"
+		class="btn btn-outline-dark" data-toggle="modal"
+		href="#EditarPersonalModal">Editar</button>
+
+		<a class="btn btn-outline-dark" href="{% url 'administracion:eliminarproducto' i.id %}">Eliminar</a>
+	</div>
+	{% endif %}
+	{% endfor %}
+
+	
+	<div class="mdl-card__title">
+		<img src="{{i.icono.url}}" style="height: 200px; width: 200px;" alt="...">
+	</div>
+	<div class="card-body">
+		<p class="card-text"><b> Nombre: </b>{{i.nombre}}</p>
+		<p class="card-text"><b> Descripción: </b>{{i.descripcion}}</p>
+		<p class="card-text"><b> Categoría: </b>{{i.categoria}}</p>
+		<p class="card-text"><b> Cantidad: </b>{{i.cantidad}}</p>
+	</div>
+	<div class="mdl-card__actions mdl-card--border card bg-dark text-warning">
+		<dt>Precio: Q {{i.precio}}</dt>
+		<div class="mdl-card__actions mdl-card--border card bg-dark">
+			{% include 'vermas.html' %} 
+		</div>
+	</div>
+	
+
+
+</div>
+</div>
+</div>
+
+
+
+{% endfor %}
+
+
+<div id="AgregarPersonalModal" class="modal" style="overflow: scroll;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bg-info">
+				<h5 class="modal-title text-light">Agregar nuevo producto</h5>
+			</div>
+			<div class="modal-body bg-dark text-white">
+				<form method="POST" action="{% url 'administracion:crearproducto' %}" enctype="multipart/form-data">
+					{%csrf_token %}
+					{% for field in form_personal %}
+					<p>{{field.label}} <br>
+						{{field|add_class:"form-control text-dark"}}</p>
+					{% for error in field.errors %}
+					<p class="alarma">{{error}}</p>
+					{% endfor %}
+					{% endfor %}
+					{% for error in form.non_field_errors %}
+					<p class="alarma">{{error}}</p>
+					{% endfor %}
+			</div>
+			<div class="modal-footer bg-dark">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					Cancelar
+				</button>
+				<button type="submit" class="btn btn-success">
+					Agregar
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div id="EditarPersonalModal" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bg-info">
+				<h5 class="modal-title text-light">Editar</h5>
+			</div>
+			<div class="modal-body bg-dark text-white">
+				<form method="POST" action="{% url 'administracion:editarproducto' %}" enctype="multipart/form-data">
+					{%csrf_token %}
+					<input type="hidden" id="id_personal_editar" name="id_personal_editar">
+					{% for field in form_editar %}
+					<p> {{field.label}} <br>
+						{{field|add_class:"form-control"}}</p>
+					{% for error in field.errors %}
+					<p class="alarma">{{error}}</p>
+					{% endfor %}
+					{% endfor %}
+					{% for error in form.non_field_errors %}
+					<p class="alarma">{{error}}</p>
+					{% endfor %}
+			</div>
+			<div class="modal-footer bg-dark text-white">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					Volver
+				</button>
+				<button type="submit" class="btn btn-success">
+					Aceptar
+				</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

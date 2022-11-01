@@ -1,0 +1,8 @@
+<form action = "{% url 'ventas:getOne' %}" method="post">
+    {%csrf_token%}
+
+    <input type="hidden" name="product_id" value="{{i.id}}">
+    <div class="mt-2">
+        <button type="submit" class="btn btn-warning">Comprar</button>
+    </div>
+</form>
